@@ -107,6 +107,15 @@
     ],
     [
       'num'    => 4,
+      'title'  => 'Get All Filters',
+      'method' => 'GET',
+      'url'    => $base . '/filter/get-all-filters',
+      'headers'=> ['Authorization' => $token],
+      'params' => [],
+      'desc'   => 'Fetches all active filter categories with their active filters. Returns <code>id</code>, <code>name</code>, <code>image_url</code>, and <code>filters</code> array (each with <code>id</code>, <code>name</code>, <code>is_premium</code>, <code>values</code> containing saturation, brightness, contrast, red, green, blue). Categories with no active filters are excluded.',
+    ],
+    [
+      'num'    => 5,
       'title'  => 'Get Doodles',
       'method' => 'GET',
       'url'    => $base . '/doodle/get-doodles',
@@ -135,7 +144,7 @@
           <i class="fas fa-code text-primary" style="font-size:2rem; margin-right:12px;"></i>
           <div>
             <h4 class="mb-0 fw-bold text-primary">API List</h4>
-            <small class="text-muted">AI Image Filter, Sticker, Doodle &amp; Font — available API endpoints</small>
+            <small class="text-muted">AI Image Filter, Filter, Sticker, Doodle &amp; Font — available API endpoints</small>
           </div>
         </div>
 

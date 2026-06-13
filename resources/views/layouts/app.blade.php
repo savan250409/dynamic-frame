@@ -110,6 +110,25 @@
 
           <li class="nav-section">
             <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+            <h4 class="text-section">Filter</h4>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('filter-categories.*') ? 'active' : '' }}">
+            <a href="{{ route('filter-categories.index') }}">
+              <i class="fas fa-filter"></i>
+              <p>Category</p>
+            </a>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('filters.*') ? 'active' : '' }}">
+            <a href="{{ route('filters.index') }}">
+              <i class="fas fa-sliders-h"></i>
+              <p>Filters</p>
+            </a>
+          </li>
+
+          <li class="nav-section">
+            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
             <h4 class="text-section">Doodle</h4>
           </li>
 

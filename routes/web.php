@@ -10,6 +10,8 @@ use App\Http\Controllers\StickerCategoryController;
 use App\Http\Controllers\StickerController;
 use App\Http\Controllers\FontController;
 use App\Http\Controllers\DoodleController;
+use App\Http\Controllers\FilterCategoryController;
+use App\Http\Controllers\FilterController;
 
 // Root → login
 Route::get('/', function () {
@@ -76,6 +78,31 @@ Route::middleware('auth')->group(function () {
         Route::put('/{stickerCategory}',                 [StickerController::class, 'update'])->name('update');
         Route::delete('/{stickerCategory}',              [StickerController::class, 'destroy'])->name('destroy');
         Route::post('/{stickerCategory}/remove-sticker', [StickerController::class, 'removeSticker'])->name('remove-sticker');
+    });
+
+    // Filter Categories
+    Route::prefix('admin/filter-categories')->name('filter-categories.')->group(function () {
+        Route::get('/',               [FilterCategoryController::class, 'index'])->name('index');
+        Route::get('/create',         [FilterCategoryController::class, 'create'])->name('create');
+        Route::post('/',              [FilterCategoryController::class, 'store'])->name('store');
+        Route::post('/update-status', [FilterCategoryController::class, 'updateStatus'])->name('update-status');
+        Route::get('/order-list',     [FilterCategoryController::class, 'orderList'])->name('order-list');
+        Route::post('/update-order',  [FilterCategoryController::class, 'updateOrder'])->name('update-order');
+        Route::get('/{filterCategory}/edit', [FilterCategoryController::class, 'edit'])->name('edit');
+        Route::put('/{filterCategory}',      [FilterCategoryController::class, 'update'])->name('update');
+        Route::delete('/{filterCategory}',   [FilterCategoryController::class, 'destroy'])->name('destroy');
+    });
+
+    // Filters
+    Route::prefix('admin/filters')->name('filters.')->group(function () {
+        Route::get('/',              [FilterController::class, 'index'])->name('index');
+        Route::get('/create',        [FilterController::class, 'create'])->name('create');
+        Route::post('/',             [FilterController::class, 'store'])->name('store');
+        Route::get('/import-csv',    [FilterController::class, 'importCsv'])->name('import-csv');
+        Route::post('/import-csv',   [FilterController::class, 'processImport'])->name('process-import');
+        Route::get('/{filter}/edit', [FilterController::class, 'edit'])->name('edit');
+        Route::put('/{filter}',      [FilterController::class, 'update'])->name('update');
+        Route::delete('/{filter}',   [FilterController::class, 'destroy'])->name('destroy');
     });
 
     // Doodle
