@@ -70,6 +70,56 @@
             </a>
           </li>
 
+          <li class="nav-section">
+            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+            <h4 class="text-section">AI Image Filter</h4>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('ai-image-filter-categories.*') ? 'active' : '' }}">
+            <a href="{{ route('ai-image-filter-categories.index') }}">
+              <i class="fas fa-tags"></i>
+              <p>Category</p>
+            </a>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('ai-image-filters.*') ? 'active' : '' }}">
+            <a href="{{ route('ai-image-filters.index') }}">
+              <i class="fas fa-magic"></i>
+              <p>AI Image Filters</p>
+            </a>
+          </li>
+
+          <li class="nav-section">
+            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+            <h4 class="text-section">Sticker</h4>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('sticker-categories.*') ? 'active' : '' }}">
+            <a href="{{ route('sticker-categories.index') }}">
+              <i class="fas fa-sticky-note"></i>
+              <p>Category</p>
+            </a>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('stickers.*') ? 'active' : '' }}">
+            <a href="{{ route('stickers.index') }}">
+              <i class="fas fa-images"></i>
+              <p>Stickers</p>
+            </a>
+          </li>
+
+          <li class="nav-section">
+            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+            <h4 class="text-section">Developer</h4>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('api-list') ? 'active' : '' }}">
+            <a href="{{ route('api-list') }}">
+              <i class="fas fa-code"></i>
+              <p>API List</p>
+            </a>
+          </li>
+
         </ul>
       </div>
     </div>
@@ -154,6 +204,111 @@
 <script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
 <script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
 <script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
+
+<script>
+/* ── Sidebar toggle fix ──────────────────────────────────────────────
+   kaiadmin tracks state in closure vars (h, f) which reset on every
+   page load. We replace those handlers with class-state checks so
+   the sidebar behaves correctly and state is persisted via localStorage.
+   .off('click') removes kaiadmin's bindings before adding ours,
+   preventing double-fire. The hover mini-expand is re-wired the same way.
+─────────────────────────────────────────────────────────────────────── */
+$(function () {
+
+  /* ── Restore state ── */
+  if (localStorage.getItem('kai_sidebar_mini') === '1') {
+    $('.wrapper').addClass('sidebar_minimize');
+    $('.toggle-sidebar').addClass('toggled').html('<i class="gg-more-vertical-alt"></i>');
+  }
+
+  /* ── Desktop: collapse / expand ── */
+  $(document).off('click', '.toggle-sidebar')
+             .on('click',  '.toggle-sidebar', function () {
+    var isMini = $('.wrapper').hasClass('sidebar_minimize');
+    if (isMini) {
+      $('.wrapper').removeClass('sidebar_minimize sidebar_minimize_hover');
+      $('.toggle-sidebar').removeClass('toggled').html('<i class="gg-menu-right"></i>');
+      localStorage.setItem('kai_sidebar_mini', '0');
+    } else {
+      $('.wrapper').addClass('sidebar_minimize');
+      $('.toggle-sidebar').addClass('toggled').html('<i class="gg-more-vertical-alt"></i>');
+      localStorage.setItem('kai_sidebar_mini', '1');
+    }
+    $(window).trigger('resize');
+  });
+
+  /* ── Mobile: open / close overlay ── */
+  $(document).off('click', '.sidenav-toggler')
+             .on('click',  '.sidenav-toggler', function () {
+    if ($('html').hasClass('nav_open')) {
+      $('html').removeClass('nav_open');
+      $('.sidenav-toggler').removeClass('toggled');
+    } else {
+      $('html').addClass('nav_open');
+      $('.sidenav-toggler').addClass('toggled');
+    }
+  });
+
+  /* ── Mobile: top-bar toggle ── */
+  $(document).off('click', '.topbar-toggler')
+             .on('click',  '.topbar-toggler', function () {
+    if ($('html').hasClass('topbar_open')) {
+      $('html').removeClass('topbar_open');
+      $('.topbar-toggler').removeClass('toggled');
+    } else {
+      $('html').addClass('topbar_open');
+      $('.topbar-toggler').addClass('toggled');
+    }
+  });
+
+  /* ── Close mobile sidebar when clicking outside ── */
+  $(document).on('click', function (e) {
+    if (!$('html').hasClass('nav_open')) return;
+    var $sb  = $('.sidebar');
+    var $tog = $('.sidenav-toggler');
+    if (!$sb.is(e.target) && $sb.has(e.target).length === 0 &&
+        !$tog.is(e.target) && $tog.has(e.target).length === 0) {
+      $('html').removeClass('nav_open');
+      $('.sidenav-toggler').removeClass('toggled');
+    }
+  });
+
+  /* ── Mini-sidebar hover expand ── */
+  $('.sidebar')
+    .off('mouseenter.kai mouseleave.kai')
+    .on('mouseenter.kai', function () {
+      if ($('.wrapper').hasClass('sidebar_minimize')) {
+        $('.wrapper').addClass('sidebar_minimize_hover');
+      }
+    })
+    .on('mouseleave.kai', function () {
+      $('.wrapper').removeClass('sidebar_minimize_hover');
+    });
+
+  /* ── Submenu accordion ── */
+  $(document).off('click.submenu', '.nav-item a')
+             .on('click.submenu',  '.nav-item a', function () {
+    var $collapse = $(this).parent().find('.collapse');
+    if ($collapse.hasClass('show')) {
+      $(this).parent().removeClass('submenu');
+    } else {
+      $(this).parent().addClass('submenu');
+    }
+  });
+
+});
+</script>
+
 @stack('scripts')
+<script>
+/* Auto-dismiss Bootstrap alerts after 5 seconds */
+$(function () {
+  setTimeout(function () {
+    $('.alert-dismissible.fade.show').fadeOut(400, function () {
+      $(this).remove();
+    });
+  }, 5000);
+});
+</script>
 </body>
 </html>
