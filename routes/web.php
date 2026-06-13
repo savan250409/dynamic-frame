@@ -9,6 +9,7 @@ use App\Http\Controllers\ApiListController;
 use App\Http\Controllers\StickerCategoryController;
 use App\Http\Controllers\StickerController;
 use App\Http\Controllers\FontController;
+use App\Http\Controllers\DoodleController;
 
 // Root → login
 Route::get('/', function () {
@@ -75,6 +76,19 @@ Route::middleware('auth')->group(function () {
         Route::put('/{stickerCategory}',                 [StickerController::class, 'update'])->name('update');
         Route::delete('/{stickerCategory}',              [StickerController::class, 'destroy'])->name('destroy');
         Route::post('/{stickerCategory}/remove-sticker', [StickerController::class, 'removeSticker'])->name('remove-sticker');
+    });
+
+    // Doodle
+    Route::prefix('admin/doodles')->name('doodles.')->group(function () {
+        Route::get('/',               [DoodleController::class, 'index'])->name('index');
+        Route::get('/create',         [DoodleController::class, 'create'])->name('create');
+        Route::post('/',              [DoodleController::class, 'store'])->name('store');
+        Route::get('/order-list',     [DoodleController::class, 'orderList'])->name('order-list');
+        Route::post('/update-status', [DoodleController::class, 'updateStatus'])->name('update-status');
+        Route::post('/update-order',  [DoodleController::class, 'updateOrder'])->name('update-order');
+        Route::get('/{doodle}/edit',  [DoodleController::class, 'edit'])->name('edit');
+        Route::put('/{doodle}',       [DoodleController::class, 'update'])->name('update');
+        Route::delete('/{doodle}',    [DoodleController::class, 'destroy'])->name('destroy');
     });
 
     // Font

@@ -110,6 +110,18 @@
 
           <li class="nav-section">
             <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+            <h4 class="text-section">Doodle</h4>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('doodles.*') ? 'active' : '' }}">
+            <a href="{{ route('doodles.index') }}">
+              <i class="fas fa-pen-nib"></i>
+              <p>Doodles</p>
+            </a>
+          </li>
+
+          <li class="nav-section">
+            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
             <h4 class="text-section">Font</h4>
           </li>
 

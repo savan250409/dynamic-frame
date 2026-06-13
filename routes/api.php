@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AiImageFilterApiController;
 use App\Http\Controllers\Api\StickerApiController;
 use App\Http\Controllers\Api\FontApiController;
+use App\Http\Controllers\Api\DoodleApiController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -24,4 +25,9 @@ Route::prefix('sticker')->middleware('api.token')->group(function () {
 // Font API — Bearer token required
 Route::prefix('font')->middleware('api.token')->group(function () {
     Route::get('/get-fonts', [FontApiController::class, 'getFonts']);
+});
+
+// Doodle API — Bearer token required
+Route::prefix('doodle')->middleware('api.token')->group(function () {
+    Route::get('/get-doodles', [DoodleApiController::class, 'getDoodles']);
 });

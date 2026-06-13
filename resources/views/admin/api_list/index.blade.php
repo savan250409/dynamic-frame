@@ -107,6 +107,15 @@
     ],
     [
       'num'    => 4,
+      'title'  => 'Get Doodles',
+      'method' => 'GET',
+      'url'    => $base . '/doodle/get-doodles',
+      'headers'=> ['Authorization' => $token],
+      'params' => [],
+      'desc'   => 'Fetches all active doodles. Returns <code>id</code>, <code>name</code>, <code>doodle_type</code> (<code>image</code> or <code>line</code>), <code>is_premium</code>, and <code>image_url</code>. Only doodles with <code>status = 1</code> are included.',
+    ],
+    [
+      'num'    => 5,
       'title'  => 'Get Fonts',
       'method' => 'GET',
       'url'    => $base . '/font/get-fonts',
@@ -126,7 +135,7 @@
           <i class="fas fa-code text-primary" style="font-size:2rem; margin-right:12px;"></i>
           <div>
             <h4 class="mb-0 fw-bold text-primary">API List</h4>
-            <small class="text-muted">AI Image Filter, Sticker &amp; Font — available API endpoints</small>
+            <small class="text-muted">AI Image Filter, Sticker, Doodle &amp; Font — available API endpoints</small>
           </div>
         </div>
 
