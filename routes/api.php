@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AiImageFilterApiController;
 use App\Http\Controllers\Api\StickerApiController;
+use App\Http\Controllers\Api\FontApiController;
 
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
@@ -18,4 +19,9 @@ Route::prefix('ai-image-filter')->middleware('api.token')->group(function () {
 // Sticker API — Bearer token required
 Route::prefix('sticker')->middleware('api.token')->group(function () {
     Route::get('/get-stickers', [StickerApiController::class, 'getStickers']);
+});
+
+// Font API — Bearer token required
+Route::prefix('font')->middleware('api.token')->group(function () {
+    Route::get('/get-fonts', [FontApiController::class, 'getFonts']);
 });

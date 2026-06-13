@@ -8,6 +8,7 @@ use App\Http\Controllers\AiImageFilterController;
 use App\Http\Controllers\ApiListController;
 use App\Http\Controllers\StickerCategoryController;
 use App\Http\Controllers\StickerController;
+use App\Http\Controllers\FontController;
 
 // Root → login
 Route::get('/', function () {
@@ -74,6 +75,18 @@ Route::middleware('auth')->group(function () {
         Route::put('/{stickerCategory}',                 [StickerController::class, 'update'])->name('update');
         Route::delete('/{stickerCategory}',              [StickerController::class, 'destroy'])->name('destroy');
         Route::post('/{stickerCategory}/remove-sticker', [StickerController::class, 'removeSticker'])->name('remove-sticker');
+    });
+
+    // Font
+    Route::prefix('admin/fonts')->name('fonts.')->group(function () {
+        Route::get('/',              [FontController::class, 'index'])->name('index');
+        Route::get('/create',        [FontController::class, 'create'])->name('create');
+        Route::post('/',             [FontController::class, 'store'])->name('store');
+        Route::get('/order-list',    [FontController::class, 'orderList'])->name('order-list');
+        Route::post('/update-order', [FontController::class, 'updateOrder'])->name('update-order');
+        Route::get('/{font}/edit',   [FontController::class, 'edit'])->name('edit');
+        Route::put('/{font}',        [FontController::class, 'update'])->name('update');
+        Route::delete('/{font}',     [FontController::class, 'destroy'])->name('destroy');
     });
 
 });

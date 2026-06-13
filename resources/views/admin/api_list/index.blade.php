@@ -105,6 +105,15 @@
       'params' => [],
       'desc'   => 'Fetches all active sticker categories along with their sticker image URLs and thumbnail. Returns <code>id</code>, <code>category_name</code>, <code>is_premium</code>, <code>thumbnail_url</code>, and <code>stickers</code> (array of image URLs).',
     ],
+    [
+      'num'    => 4,
+      'title'  => 'Get Fonts',
+      'method' => 'GET',
+      'url'    => $base . '/font/get-fonts',
+      'headers'=> ['Authorization' => $token],
+      'params' => [],
+      'desc'   => 'Fetches all active fonts. Returns <code>id</code>, <code>font_name</code>, <code>is_premium</code>, <code>font_url</code> (downloadable font file URL), and <code>preview_url</code> (preview image URL). Only fonts with <code>status = 1</code> are included.',
+    ],
   ];
 @endphp
 
@@ -117,7 +126,7 @@
           <i class="fas fa-code text-primary" style="font-size:2rem; margin-right:12px;"></i>
           <div>
             <h4 class="mb-0 fw-bold text-primary">API List</h4>
-            <small class="text-muted">AI Image Filter &amp; Sticker — available API endpoints</small>
+            <small class="text-muted">AI Image Filter, Sticker &amp; Font — available API endpoints</small>
           </div>
         </div>
 

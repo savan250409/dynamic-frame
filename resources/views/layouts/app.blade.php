@@ -110,6 +110,18 @@
 
           <li class="nav-section">
             <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
+            <h4 class="text-section">Font</h4>
+          </li>
+
+          <li class="nav-item {{ request()->routeIs('fonts.*') ? 'active' : '' }}">
+            <a href="{{ route('fonts.index') }}">
+              <i class="fas fa-font"></i>
+              <p>Fonts</p>
+            </a>
+          </li>
+
+          <li class="nav-section">
+            <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
             <h4 class="text-section">Developer</h4>
           </li>
 
