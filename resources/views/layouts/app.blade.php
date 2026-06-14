@@ -5,10 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>@yield('title', 'Dashboard') – NGD Admin</title>
 
-  <link rel="stylesheet" href="{{ asset('assets/css/bootstrap.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/plugins.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/kaiadmin.min.css') }}">
-  <link rel="stylesheet" href="{{ asset('assets/css/fonts.min.css') }}">
+  @php $cssVer = file_exists(public_path('assets/css/bundle.min.css')) ? filemtime(public_path('assets/css/bundle.min.css')) : '1'; @endphp
+  <link rel="stylesheet" href="{{ asset('assets/css/bundle.min.css') }}?v={{ $cssVer }}">
 
   <style>
     .ngd-logo-wrap {
@@ -37,6 +35,17 @@
 </head>
 <body>
 <div class="wrapper">
+<script>
+/* Restore desktop sidebar minimize state BEFORE kaiadmin reads .wrapper on DOMReady */
+(function () {
+  var el = document.currentScript
+    ? document.currentScript.parentElement
+    : document.querySelector('.wrapper');
+  if (el && localStorage.getItem('kai_sidebar_mini') === '1') {
+    el.classList.add('sidebar_minimize');
+  }
+}());
+</script>
 
   {{-- =================== SIDEBAR =================== --}}
   <div class="sidebar" data-background-color="dark">
@@ -243,101 +252,57 @@
   </div>
 </div>
 
-<script src="{{ asset('assets/js/core/jquery-3.7.1.min.js') }}"></script>
-<script src="{{ asset('assets/js/core/popper.min.js') }}"></script>
-<script src="{{ asset('assets/js/core/bootstrap.min.js') }}"></script>
-<script src="{{ asset('assets/js/kaiadmin.min.js') }}"></script>
+@php $jsVer = file_exists(public_path('assets/js/bundle.min.js')) ? filemtime(public_path('assets/js/bundle.min.js')) : '1'; @endphp
+<script src="{{ asset('assets/js/bundle.min.js') }}?v={{ $jsVer }}"></script>
 
 <script>
-/* ── Sidebar toggle fix ──────────────────────────────────────────────
-   kaiadmin tracks state in closure vars (h, f) which reset on every
-   page load. We replace those handlers with class-state checks so
-   the sidebar behaves correctly and state is persisted via localStorage.
-   .off('click') removes kaiadmin's bindings before adding ours,
-   preventing double-fire. The hover mini-expand is re-wired the same way.
-─────────────────────────────────────────────────────────────────────── */
 $(function () {
 
-  /* ── Restore state ── */
-  if (localStorage.getItem('kai_sidebar_mini') === '1') {
-    $('.wrapper').addClass('sidebar_minimize');
-    $('.toggle-sidebar').addClass('toggled').html('<i class="gg-more-vertical-alt"></i>');
+  /*
+   * DESKTOP — MutationObserver saves state whenever kaiadmin toggles
+   * sidebar_minimize on .wrapper. Zero click-handler conflict.
+   */
+  var _w = document.querySelector('.wrapper');
+  if (_w) {
+    new MutationObserver(function (ms) {
+      ms.forEach(function (m) {
+        if (m.attributeName === 'class') {
+          localStorage.setItem('kai_sidebar_mini',
+            m.target.classList.contains('sidebar_minimize') ? '1' : '0');
+        }
+      });
+    }).observe(_w, { attributes: true, attributeFilter: ['class'] });
   }
 
-  /* ── Desktop: collapse / expand ── */
-  $(document).off('click', '.toggle-sidebar')
-             .on('click',  '.toggle-sidebar', function () {
-    var isMini = $('.wrapper').hasClass('sidebar_minimize');
-    if (isMini) {
-      $('.wrapper').removeClass('sidebar_minimize sidebar_minimize_hover');
-      $('.toggle-sidebar').removeClass('toggled').html('<i class="gg-menu-right"></i>');
-      localStorage.setItem('kai_sidebar_mini', '0');
-    } else {
-      $('.wrapper').addClass('sidebar_minimize');
-      $('.toggle-sidebar').addClass('toggled').html('<i class="gg-more-vertical-alt"></i>');
-      localStorage.setItem('kai_sidebar_mini', '1');
-    }
-    $(window).trigger('resize');
+  /*
+   * MOBILE — Transparent overlay (z-index 1000) appears when the mobile
+   * sidebar opens (html.nav_open). Tapping the overlay triggers kaiadmin's
+   * .sidenav-toggler so its internal nav_open counter stays in sync.
+   *
+   * z-index reference (from kaiadmin.min.css):
+   *   .sidebar       → 1002  (above overlay — sidebar remains clickable)
+   *   .main-header   → 1001  (above overlay — header stays interactive)
+   *   overlay        → 1000  (catches taps on translated main-panel)
+   */
+  var $ov = $('<div id="ngd-sb-ov"></div>').css({
+    display  : 'none',
+    position : 'fixed',
+    top: 0, left: 0, width: '100%', height: '100%',
+    zIndex   : 1000
+  }).appendTo('body');
+
+  $ov.on('click', function () {
+    $('.sidenav-toggler').first().trigger('click');
   });
 
-  /* ── Mobile: open / close overlay ── */
-  $(document).off('click', '.sidenav-toggler')
-             .on('click',  '.sidenav-toggler', function () {
-    if ($('html').hasClass('nav_open')) {
-      $('html').removeClass('nav_open');
-      $('.sidenav-toggler').removeClass('toggled');
-    } else {
-      $('html').addClass('nav_open');
-      $('.sidenav-toggler').addClass('toggled');
-    }
-  });
-
-  /* ── Mobile: top-bar toggle ── */
-  $(document).off('click', '.topbar-toggler')
-             .on('click',  '.topbar-toggler', function () {
-    if ($('html').hasClass('topbar_open')) {
-      $('html').removeClass('topbar_open');
-      $('.topbar-toggler').removeClass('toggled');
-    } else {
-      $('html').addClass('topbar_open');
-      $('.topbar-toggler').addClass('toggled');
-    }
-  });
-
-  /* ── Close mobile sidebar when clicking outside ── */
-  $(document).on('click', function (e) {
-    if (!$('html').hasClass('nav_open')) return;
-    var $sb  = $('.sidebar');
-    var $tog = $('.sidenav-toggler');
-    if (!$sb.is(e.target) && $sb.has(e.target).length === 0 &&
-        !$tog.is(e.target) && $tog.has(e.target).length === 0) {
-      $('html').removeClass('nav_open');
-      $('.sidenav-toggler').removeClass('toggled');
-    }
-  });
-
-  /* ── Mini-sidebar hover expand ── */
-  $('.sidebar')
-    .off('mouseenter.kai mouseleave.kai')
-    .on('mouseenter.kai', function () {
-      if ($('.wrapper').hasClass('sidebar_minimize')) {
-        $('.wrapper').addClass('sidebar_minimize_hover');
+  /* Watch html.nav_open class — show overlay when sidebar is open */
+  new MutationObserver(function (ms) {
+    ms.forEach(function (m) {
+      if (m.attributeName === 'class') {
+        $ov.toggle($('html').hasClass('nav_open'));
       }
-    })
-    .on('mouseleave.kai', function () {
-      $('.wrapper').removeClass('sidebar_minimize_hover');
     });
-
-  /* ── Submenu accordion ── */
-  $(document).off('click.submenu', '.nav-item a')
-             .on('click.submenu',  '.nav-item a', function () {
-    var $collapse = $(this).parent().find('.collapse');
-    if ($collapse.hasClass('show')) {
-      $(this).parent().removeClass('submenu');
-    } else {
-      $(this).parent().addClass('submenu');
-    }
-  });
+  }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
 
 });
 </script>

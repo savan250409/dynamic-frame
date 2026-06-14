@@ -8,6 +8,13 @@ class DatabaseSeeder extends Seeder
 {
     public function run()
     {
-        $this->call(AdminSeeder::class);
+        $this->call([
+            AdminSeeder::class,
+            AiImageFilterSeeder::class,
+            FilterSeeder::class,
+            StickerSeeder::class,
+            DoodleSeeder::class,
+            FontSeeder::class,
+        ]);
     }
 }

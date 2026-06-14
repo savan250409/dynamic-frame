@@ -6,6 +6,11 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Models\AiImageFilterCategory;
 use App\Models\AiImageFilter;
+use App\Models\FilterCategory;
+use App\Models\Filter;
+use App\Models\StickerCategory;
+use App\Models\Doodle;
+use App\Models\Font;
 
 class DashboardController extends Controller
 {
@@ -16,11 +21,29 @@ class DashboardController extends Controller
 
     public function index()
     {
+        $stickerCategories = StickerCategory::all();
+
         return view('dashboard', [
-            'user'            => Auth::user(),
-            'totalCategories' => AiImageFilterCategory::count(),
-            'activeCategories'=> AiImageFilterCategory::where('status', 1)->count(),
-            'totalFilters'    => AiImageFilter::count(),
+            'user' => Auth::user(),
+
+            // AI Image Filter
+            'totalAiFilterCategories'  => AiImageFilterCategory::count(),
+            'activeAiFilterCategories' => AiImageFilterCategory::where('status', 1)->count(),
+            'totalAiFilters'           => AiImageFilter::count(),
+
+            // Filter
+            'totalFilterCategories' => FilterCategory::count(),
+            'totalFilters'          => Filter::count(),
+
+            // Sticker
+            'totalStickerCategories' => $stickerCategories->count(),
+            'totalStickerImages'     => $stickerCategories->sum(fn ($c) => count($c->stickers ?? [])),
+
+            // Doodle
+            'totalDoodles' => Doodle::count(),
+
+            // Font
+            'totalFonts' => Font::count(),
         ]);
     }
 }

@@ -35,7 +35,7 @@ class AiImageFilterCategoryController extends Controller
             ]);
         }
 
-        $query = AiImageFilterCategory::query();
+        $query = AiImageFilterCategory::withCount('filters');
         if ($search) {
             $query->where('category_name', 'like', '%' . $search . '%');
         }

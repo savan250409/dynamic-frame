@@ -53,7 +53,7 @@ class FilterCategoryController extends Controller
             ]);
         }
 
-        $query = FilterCategory::query();
+        $query = FilterCategory::withCount('filters');
         if ($search) {
             $query->where('name', 'like', '%' . $search . '%');
         }
@@ -164,6 +164,10 @@ class FilterCategoryController extends Controller
 
     public function destroy(FilterCategory $filterCategory)
     {
+        // Delete all child Filter records from DB
+        $filterCategory->filters()->delete();
+
+        // Delete category folder (thumbnail image + any other files)
         $dir = public_path('upload/filter/' . $filterCategory->name);
         if (File::exists($dir)) {
             File::deleteDirectory($dir);

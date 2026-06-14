@@ -113,6 +113,7 @@
                       <button class="btn btn-danger btn-sm delete-btn ms-1"
                         data-url="{{ route('ai-image-filter-categories.destroy', $category->id) }}"
                         data-name="{{ $category->category_name }}"
+                        data-count="{{ $category->filters_count }}"
                         style="border-radius:6px;">
                         <i class="fas fa-trash"></i>
                       </button>
@@ -175,7 +176,7 @@
 
 @push('scripts')
 <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('assets/js/plugin/sweetalert2.all.min.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <style>
   .drag-handle { cursor: grab; }
@@ -211,6 +212,7 @@ $(document).ready(function () {
   $(document).on('click', '.delete-btn', function () {
     var url     = $(this).data('url');
     var catName = $(this).data('name');
+    var count   = parseInt($(this).data('count')) || 0;
     var $row    = $(this).closest('tr');
 
     /* ── Step 1: basic confirmation ── */
@@ -233,7 +235,7 @@ $(document).ready(function () {
               '<p class="text-danger fw-bold mb-2">&#9888; This will permanently delete:</p>' +
               '<ul class="mb-3">' +
               '<li>Category thumbnail image</li>' +
-              '<li>All AI Image Filters in this category</li>' +
+              '<li>All AI Image Filters in this category (<strong>' + count + ' filter' + (count !== 1 ? 's' : '') + '</strong>)</li>' +
               '<li>All filter images &amp; zip files</li>' +
               '</ul>' +
               '<p class="mb-0 text-muted" style="font-size:.88rem;">This action <strong>cannot be undone</strong>.</p>' +

@@ -116,6 +116,7 @@
                       <button class="btn btn-danger btn-sm delete-btn ms-1"
                         data-url="{{ route('filter-categories.destroy', $category->id) }}"
                         data-name="{{ $category->name }}"
+                        data-count="{{ $category->filters_count }}"
                         style="border-radius:6px;">
                         <i class="fas fa-trash"></i>
                       </button>
@@ -149,7 +150,7 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('assets/js/plugin/sweetalert2.all.min.js') }}"></script>
 <script>
 $(document).ready(function () {
 
@@ -181,9 +182,10 @@ $(document).ready(function () {
 
   /* Delete */
   $(document).on('click', '.delete-btn', function () {
-    var url  = $(this).data('url');
-    var name = $(this).data('name');
-    var $row = $(this).closest('tr');
+    var url   = $(this).data('url');
+    var name  = $(this).data('name');
+    var count = parseInt($(this).data('count')) || 0;
+    var $row  = $(this).closest('tr');
 
     Swal.fire({
       title: 'Delete Category?',
@@ -198,7 +200,9 @@ $(document).ready(function () {
       Swal.fire({
         title: 'Final Confirmation',
         html: '<div style="text-align:left;"><p class="text-danger fw-bold mb-2">&#9888; This will permanently delete:</p>' +
-              '<ul class="mb-3"><li>Category thumbnail</li><li>All associated filters</li></ul>' +
+              '<ul class="mb-3"><li>Category thumbnail image</li>' +
+              '<li>All associated filters (<strong>' + count + ' filter' + (count !== 1 ? 's' : '') + '</strong>)</li>' +
+              '<li>All filter images &amp; zip files</li></ul>' +
               '<p class="mb-0 text-muted" style="font-size:.88rem;">This action <strong>cannot be undone</strong>.</p></div>',
         icon: 'error',
         showCancelButton:   true,
