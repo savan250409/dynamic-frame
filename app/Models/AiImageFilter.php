@@ -11,7 +11,7 @@ class AiImageFilter extends Model
 
     protected $table = 'ai_image_filters';
 
-    protected $fillable = ['category_id', 'name', 'ai_prompt', 'image_path', 'zip_file', 'sort_order'];
+    protected $fillable = ['category_id', 'input_count', 'image_path', 'zip_file', 'sort_order'];
 
     public function category()
     {

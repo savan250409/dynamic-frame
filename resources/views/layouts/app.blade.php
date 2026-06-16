@@ -81,7 +81,7 @@
 
           <li class="nav-section">
             <span class="sidebar-mini-icon"><i class="fa fa-ellipsis-h"></i></span>
-            <h4 class="text-section">AI Image Filter</h4>
+            <h4 class="text-section">Dynamic Frame</h4>
           </li>
 
           <li class="nav-item {{ request()->routeIs('ai-image-filter-categories.*') ? 'active' : '' }}">
@@ -94,7 +94,7 @@
           <li class="nav-item {{ request()->routeIs('ai-image-filters.*') ? 'active' : '' }}">
             <a href="{{ route('ai-image-filters.index') }}">
               <i class="fas fa-magic"></i>
-              <p>AI Image Filters</p>
+              <p>Dynamic Frames</p>
             </a>
           </li>
 

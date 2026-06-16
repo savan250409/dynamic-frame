@@ -39,12 +39,6 @@ class AiImageFilterController extends Controller
         }
 
         $query = AiImageFilter::with('category');
-        if ($search) {
-            $query->where(function ($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('ai_prompt', 'like', '%' . $search . '%');
-            });
-        }
         if ($categoryId) {
             $query->where('category_id', $categoryId);
         }
@@ -71,8 +65,7 @@ class AiImageFilterController extends Controller
     {
         $request->validate([
             'category_id' => 'required|exists:ai_image_filter_categories,id',
-            'name'        => 'required|string|max:255',
-            'ai_prompt'   => 'required|string',
+            'input_count' => 'required|integer|min:1',
             'image'       => 'required|image|mimes:webp',
             'zip_file'    => 'required|file|mimes:zip',
         ], [
@@ -98,8 +91,7 @@ class AiImageFilterController extends Controller
 
         AiImageFilter::create([
             'category_id' => $request->category_id,
-            'name'        => $request->name,
-            'ai_prompt'   => $request->ai_prompt,
+            'input_count' => $request->input_count,
             'image_path'  => $imageName,
             'zip_file'    => $zipName,
             'sort_order'  => 0,
@@ -119,8 +111,7 @@ class AiImageFilterController extends Controller
     {
         $request->validate([
             'category_id' => 'required|exists:ai_image_filter_categories,id',
-            'name'        => 'required|string|max:255',
-            'ai_prompt'   => 'required|string',
+            'input_count' => 'required|integer|min:1',
             'image'       => 'nullable|image|mimes:webp',
             'zip_file'    => 'nullable|file|mimes:zip',
         ], [
@@ -185,8 +176,7 @@ class AiImageFilterController extends Controller
 
         $aiImageFilter->update([
             'category_id' => $request->category_id,
-            'name'        => $request->name,
-            'ai_prompt'   => $request->ai_prompt,
+            'input_count' => $request->input_count,
             'image_path'  => $imageName,
             'zip_file'    => $zipName,
         ]);
@@ -237,15 +227,14 @@ class AiImageFilterController extends Controller
 
         $filters = $query->orderBy('sort_order', 'asc')
                          ->orderBy('id', 'asc')
-                         ->get(['id', 'category_id', 'name', 'ai_prompt', 'image_path', 'sort_order']);
+                         ->get(['id', 'category_id', 'input_count', 'image_path', 'sort_order']);
 
         $filters->transform(function ($filter) {
             $cat = $filter->category;
             return [
-                'id'        => $filter->id,
-                'name'      => $filter->name,
-                'ai_prompt' => $filter->ai_prompt,
-                'image_url' => ($cat && $filter->image_path)
+                'id'          => $filter->id,
+                'input_count' => $filter->input_count ?? 1,
+                'image_url'   => ($cat && $filter->image_path)
                     ? asset('upload/ai_image_filter/' . rawurlencode($cat->category_name) . '/images/' . rawurlencode($filter->image_path))
                     : null,
             ];

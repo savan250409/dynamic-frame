@@ -9,7 +9,7 @@
   <ul class="breadcrumbs">
     <li class="nav-home"><a href="{{ route('dashboard') }}"><i class="icon-home"></i></a></li>
     <li class="separator"><i class="icon-arrow-right"></i></li>
-    <li class="nav-item"><a href="{{ route('ai-image-filter-categories.index') }}">AI Image Filter Category</a></li>
+    <li class="nav-item"><a href="{{ route('ai-image-filter-categories.index') }}">Dynamic Frame Category</a></li>
     <li class="separator"><i class="icon-arrow-right"></i></li>
     <li class="nav-item"><a href="#">Add</a></li>
   </ul>
@@ -25,7 +25,7 @@
             <i class="fas fa-plus-circle text-primary" style="font-size:2rem; margin-right:10px;"></i>
             <div>
               <h4 class="mb-0 fw-bold text-primary">Add New Category</h4>
-              <small class="text-muted">Create a new AI image filter category</small>
+              <small class="text-muted">Create a new dynamic frame category</small>
             </div>
           </div>
           <a href="{{ route('ai-image-filter-categories.index') }}"

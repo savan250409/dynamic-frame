@@ -144,7 +144,7 @@
           <i class="fas fa-code text-primary" style="font-size:2rem; margin-right:12px;"></i>
           <div>
             <h4 class="mb-0 fw-bold text-primary">API List</h4>
-            <small class="text-muted">AI Image Filter, Filter, Sticker, Doodle &amp; Font — available API endpoints</small>
+            <small class="text-muted">Dynamic Frame, Filter, Sticker, Doodle &amp; Font — available API endpoints</small>
           </div>
         </div>
 

@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'Add AI Image Filter')
+@section('title', 'Add Dynamic Frame')
 
 @section('content')
 
 <div class="page-header">
-  <h4 class="page-title">Add AI Image Filter</h4>
+  <h4 class="page-title">Add Dynamic Frame</h4>
   <ul class="breadcrumbs">
     <li class="nav-home"><a href="{{ route('dashboard') }}"><i class="icon-home"></i></a></li>
     <li class="separator"><i class="icon-arrow-right"></i></li>
-    <li class="nav-item"><a href="{{ route('ai-image-filters.index') }}">AI Image Filter</a></li>
+    <li class="nav-item"><a href="{{ route('ai-image-filters.index') }}">Dynamic Frame</a></li>
     <li class="separator"><i class="icon-arrow-right"></i></li>
     <li class="nav-item"><a href="#">Add</a></li>
   </ul>
@@ -24,12 +24,11 @@
           <div class="d-flex align-items-center">
             <i class="fas fa-plus-circle text-primary" style="font-size:2rem; margin-right:10px;"></i>
             <div>
-              <h4 class="mb-0 fw-bold text-primary">Add New AI Image Filter</h4>
+              <h4 class="mb-0 fw-bold text-primary">Add New Dynamic Frame</h4>
               <small class="text-muted">Add a new filter to a category</small>
             </div>
           </div>
-          <a href="{{ route('ai-image-filters.index') }}"
-            class="btn btn-outline-primary btn-sm">
+          <a href="{{ route('ai-image-filters.index') }}" class="btn btn-outline-primary btn-sm">
             <i class="fas fa-arrow-left me-1"></i> Back to Filters
           </a>
         </div>
@@ -65,27 +64,6 @@
           </div>
 
           <div class="form-group mb-3">
-            <label class="fw-bold">Name <span class="text-danger">*</span></label>
-            <input type="text" name="name"
-              class="form-control @error('name') is-invalid @enderror"
-              placeholder="Enter filter name"
-              value="{{ old('name') }}" required>
-            @error('name')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="form-group mb-3">
-            <label class="fw-bold">AI Prompt <span class="text-danger">*</span></label>
-            <textarea name="ai_prompt" rows="4"
-              class="form-control @error('ai_prompt') is-invalid @enderror"
-              placeholder="Enter AI prompt for this filter" required>{{ old('ai_prompt') }}</textarea>
-            @error('ai_prompt')
-              <div class="invalid-feedback">{{ $message }}</div>
-            @enderror
-          </div>
-
-          <div class="form-group mb-3">
             <label class="fw-bold">Zip File <span class="text-danger">*</span></label>
             <input type="file" name="zip_file"
               class="form-control @error('zip_file') is-invalid @enderror"
@@ -98,13 +76,23 @@
             @enderror
           </div>
 
+          <div class="form-group mb-3">
+            <label class="fw-bold">No. of Input Count <span class="text-danger">*</span></label>
+            <input type="number" name="input_count"
+              class="form-control @error('input_count') is-invalid @enderror"
+              value="{{ old('input_count', 1) }}" min="1" required>
+            @error('input_count')
+              <div class="invalid-feedback">{{ $message }}</div>
+            @enderror
+          </div>
+
           <div class="form-group mb-4">
-            <label class="fw-bold">Thumbnail Image <span class="text-danger">*</span></label>
+            <label class="fw-bold">Thumbnail <span class="text-danger">*</span></label>
             <input type="file" name="image" id="image-input"
               class="form-control @error('image') is-invalid @enderror"
               accept=".webp,image/webp" required>
             <small class="text-warning fw-bold d-block mt-1">
-              <i class="fas fa-exclamation-triangle me-1"></i> Upload Image (.webp only)
+              <i class="fas fa-exclamation-triangle me-1"></i> Upload Thumbnail (.webp only)
             </small>
             @error('image')
               <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -116,11 +104,11 @@
           </div>
 
           <div class="d-flex gap-2">
-            <button type="submit" class="btn btn-primary flex-grow-1" style="font-size:1rem; padding:.7rem;">
+            <button type="submit" class="btn btn-primary" style="font-size:1rem; padding:.7rem 2rem;">
               <i class="fas fa-plus me-1"></i> Submit
             </button>
             <a href="{{ route('ai-image-filters.index') }}" class="btn btn-light border"
-              style="font-size:1rem; padding:.7rem;">Cancel</a>
+              style="font-size:1rem; padding:.7rem 2rem;">Cancel</a>
           </div>
         </form>
 

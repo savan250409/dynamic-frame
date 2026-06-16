@@ -193,9 +193,9 @@
   </div>
 </div>
 
-{{-- ── STAT CARDS ROW 1 — AI Image Filter ── --}}
+{{-- ── STAT CARDS ROW 1 — Dynamic Frame ── --}}
 <div class="module-label anim-up d2 mt-1">
-  <i class="fas fa-magic" style="color:#E8A020;"></i> AI Image Filter
+  <i class="fas fa-magic" style="color:#E8A020;"></i> Dynamic Frame
 </div>
 <div class="row g-3 mb-4">
   <div class="col-sm-6 col-xl-3 anim-up d2">
@@ -206,7 +206,7 @@
           <span class="stat-pill" style="background:rgba(232,160,32,.1); color:#c87a00;">Total</span>
         </div>
         <div class="stat-count count-up" data-target="{{ $totalAiFilterCategories }}">0</div>
-        <div class="stat-label">AI Filter Categories</div>
+        <div class="stat-label">Dynamic Frame Categories</div>
       </div>
     </div>
   </div>
@@ -218,7 +218,7 @@
           <span class="stat-pill" style="background:rgba(34,197,94,.1); color:#15803d;">Active</span>
         </div>
         <div class="stat-count count-up" data-target="{{ $activeAiFilterCategories }}">0</div>
-        <div class="stat-label">Active AI Categories</div>
+        <div class="stat-label">Active Dynamic Frame Categories</div>
       </div>
     </div>
   </div>
@@ -230,7 +230,7 @@
           <span class="stat-pill" style="background:rgba(63,130,247,.1); color:#1d4ed8;">Total</span>
         </div>
         <div class="stat-count count-up" data-target="{{ $totalAiFilters }}">0</div>
-        <div class="stat-label">AI Image Filters</div>
+        <div class="stat-label">Dynamic Frames</div>
       </div>
     </div>
   </div>
@@ -361,12 +361,12 @@
 
       <a href="{{ route('ai-image-filter-categories.index') }}" class="quick-card mb-2">
         <div class="qc-icon" style="background:rgba(232,160,32,.12); color:#E8A020;"><i class="fas fa-tags"></i></div>
-        <div><div class="qc-title">AI Filter Categories</div><div class="qc-sub">Manage AI image filter categories</div></div>
+        <div><div class="qc-title">Dynamic Frame Categories</div><div class="qc-sub">Manage dynamic frame categories</div></div>
         <i class="fas fa-chevron-right qc-arrow"></i>
       </a>
       <a href="{{ route('ai-image-filters.index') }}" class="quick-card mb-2">
         <div class="qc-icon" style="background:rgba(63,130,247,.12); color:#3f82f7;"><i class="fas fa-magic"></i></div>
-        <div><div class="qc-title">AI Image Filters</div><div class="qc-sub">Upload filter images & assets</div></div>
+        <div><div class="qc-title">Dynamic Frames</div><div class="qc-sub">Upload filter images & assets</div></div>
         <i class="fas fa-chevron-right qc-arrow"></i>
       </a>
       <a href="{{ route('filter-categories.index') }}" class="quick-card mb-2">
@@ -416,7 +416,7 @@
 
       @php
         $endpoints = [
-          ['method'=>'GET',  'url'=>'/api/ai-image-filter/categories',       'label'=>'AI Filter Categories'],
+          ['method'=>'GET',  'url'=>'/api/ai-image-filter/categories',       'label'=>'Dynamic Frame Categories'],
           ['method'=>'POST', 'url'=>'/api/ai-image-filter/get-by-category',  'label'=>'AI Filters By Category'],
           ['method'=>'GET',  'url'=>'/api/filter/get-all-filters',            'label'=>'Get All Filters'],
           ['method'=>'GET',  'url'=>'/api/sticker/get-stickers',              'label'=>'Get Stickers'],
@@ -497,7 +497,7 @@
       <div class="row g-2">
         @php
           $modules = [
-            ['icon'=>'fas fa-tags',         'color'=>'#E8A020', 'bg'=>'rgba(232,160,32,.1)',   'title'=>'AI Filter Categories', 'count'=>$totalAiFilterCategories,  'route'=>'ai-image-filter-categories.index'],
+            ['icon'=>'fas fa-tags',         'color'=>'#E8A020', 'bg'=>'rgba(232,160,32,.1)',   'title'=>'Dynamic Frame Categories', 'count'=>$totalAiFilterCategories,  'route'=>'ai-image-filter-categories.index'],
             ['icon'=>'fas fa-magic',         'color'=>'#3f82f7', 'bg'=>'rgba(63,130,247,.1)',   'title'=>'AI Filters',           'count'=>$totalAiFilters,            'route'=>'ai-image-filters.index'],
             ['icon'=>'fas fa-filter',        'color'=>'#06b6d4', 'bg'=>'rgba(6,182,212,.1)',    'title'=>'Filter Categories',    'count'=>$totalFilterCategories,     'route'=>'filter-categories.index'],
             ['icon'=>'fas fa-sliders-h',     'color'=>'#0891b2', 'bg'=>'rgba(6,182,212,.1)',    'title'=>'Filters',              'count'=>$totalFilters,              'route'=>'filters.index'],

@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'AI Image Filter Management')
+@section('title', 'Dynamic Frame Management')
 
 @section('content')
 
 <div class="page-header">
-  <h4 class="page-title">AI Image Filter Management</h4>
+  <h4 class="page-title">Dynamic Frame Management</h4>
   <ul class="breadcrumbs">
     <li class="nav-home"><a href="{{ route('dashboard') }}"><i class="icon-home"></i></a></li>
     <li class="separator"><i class="icon-arrow-right"></i></li>
-    <li class="nav-item"><a href="#">AI Image Filter</a></li>
+    <li class="nav-item"><a href="#">Dynamic Frame</a></li>
   </ul>
 </div>
 
@@ -23,7 +23,7 @@
           <div class="d-flex align-items-center">
             <i class="fas fa-magic text-primary" style="font-size:2rem; margin-right:12px;"></i>
             <div>
-              <h4 class="mb-0 fw-bold text-primary">AI Image Filter Management</h4>
+              <h4 class="mb-0 fw-bold text-primary">Dynamic Frame Management</h4>
               <small class="text-muted">Manage AI image filters</small>
             </div>
           </div>
@@ -59,7 +59,7 @@
             entries
           </label>
           <div class="d-flex align-items-center gap-2">
-            <select id="category-filter" class="form-select form-select-sm" style="width:170px;">
+            <select id="category-filter" class="form-select form-select-sm" style="width:200px;">
               <option value="">All Categories</option>
               @foreach($categories as $cat)
                 <option value="{{ $cat->id }}"
@@ -68,9 +68,6 @@
                 </option>
               @endforeach
             </select>
-            <input type="search" id="search-input" class="form-control form-control-sm"
-              placeholder="Search by name or prompt..."
-              value="{{ isset($search)?$search:'' }}" style="width:240px;">
           </div>
         </div>
 
@@ -80,10 +77,9 @@
               <thead class="table-light">
                 <tr>
                   <th>Category</th>
-                  <th>Name</th>
+                  <th>Input Count</th>
                   <th>Zip File</th>
                   <th>Thumbnail</th>
-                  <th>AI Prompt</th>
                   <th class="text-end">Action</th>
                 </tr>
               </thead>
@@ -95,7 +91,11 @@
                         {{ $filter->category->category_name ?? '—' }}
                       </span>
                     </td>
-                    <td><strong>{{ $filter->name }}</strong></td>
+                    <td>
+                      <span class="badge bg-secondary" style="font-size:.85rem; padding:.35rem .75rem;">
+                        {{ $filter->input_count ?? 1 }}
+                      </span>
+                    </td>
                     <td>
                       @if($filter->zip_file && $filter->category)
                         <a href="{{ asset('upload/ai_image_filter/'.rawurlencode($filter->category->category_name).'/zip/'.rawurlencode($filter->zip_file)) }}"
@@ -114,7 +114,6 @@
                         <span class="text-muted">—</span>
                       @endif
                     </td>
-                    <td>{{ \Illuminate\Support\Str::limit($filter->ai_prompt, 60) }}</td>
                     <td class="text-end">
                       <a href="{{ route('ai-image-filters.edit', $filter->id) }}"
                         class="btn btn-info btn-sm" style="border-radius:6px;">
@@ -129,7 +128,7 @@
                   </tr>
                 @empty
                   <tr>
-                    <td colspan="6" class="text-center text-muted py-4">No filters found.</td>
+                    <td colspan="5" class="text-center text-muted py-4">No filters found.</td>
                   </tr>
                 @endforelse
               </tbody>
@@ -192,7 +191,7 @@
 @endsection
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="{{ asset('assets/js/plugin/sweetalert2.all.min.js') }}"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
 <style>
   .img-sort-card {
@@ -243,7 +242,6 @@ $(document).ready(function () {
       url: "{{ route('ai-image-filters.index') }}",
       data: {
         page: page,
-        search: $('#search-input').val(),
         per_page: $('#per_page').val(),
         category_id: $('#category-filter').val()
       },
@@ -255,7 +253,6 @@ $(document).ready(function () {
     var url = new URL($(this).attr('href'), window.location.origin);
     fetchData(url.searchParams.get('page'));
   });
-  $(document).on('keyup', '#search-input', function () { fetchData(1); });
   $(document).on('change', '#per_page, #category-filter', function () { fetchData(1); });
 
   /* Indexing modal */
@@ -276,8 +273,7 @@ $(document).ready(function () {
         $card.append('<div style="width:100%;height:100px;background:#f0f0f0;display:flex;align-items:center;justify-content:center;"><i class="fas fa-image" style="font-size:2rem;color:#ccc;"></i></div>');
       }
       var $label = $('<div class="card-label">');
-      $label.append('<div class="fw-bold text-truncate">' + $('<div>').text(img.name).html() + '</div>');
-      $label.append('<div class="text-muted text-truncate" style="font-size:.65rem;">' + img.ai_prompt.substring(0, 40) + '...</div>');
+      $label.append('<div class="text-muted text-truncate" style="font-size:.72rem;">Input Count: <strong>' + (img.input_count || 1) + '</strong></div>');
       $card.append($label);
       $grid.append($card);
     });

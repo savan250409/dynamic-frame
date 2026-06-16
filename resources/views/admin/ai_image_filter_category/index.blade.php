@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@section('title', 'AI Image Filter Category')
+@section('title', 'Dynamic Frame Category')
 
 @section('content')
 
 <div class="page-header">
-  <h4 class="page-title">AI Image Filter Category</h4>
+  <h4 class="page-title">Dynamic Frame Category</h4>
   <ul class="breadcrumbs">
     <li class="nav-home"><a href="{{ route('dashboard') }}"><i class="icon-home"></i></a></li>
     <li class="separator"><i class="icon-arrow-right"></i></li>
-    <li class="nav-item"><a href="#">AI Image Filter</a></li>
+    <li class="nav-item"><a href="#">Dynamic Frame</a></li>
     <li class="separator"><i class="icon-arrow-right"></i></li>
     <li class="nav-item"><a href="#">Category</a></li>
   </ul>
@@ -25,7 +25,7 @@
           <div class="d-flex align-items-center">
             <i class="fas fa-tags text-primary" style="font-size:2rem; margin-right:12px;"></i>
             <div>
-              <h4 class="mb-0 fw-bold text-primary">AI Image Filter Category</h4>
+              <h4 class="mb-0 fw-bold text-primary">Dynamic Frame Category</h4>
               <small class="text-muted">Manage AI image filter categories</small>
             </div>
           </div>
@@ -235,7 +235,7 @@ $(document).ready(function () {
               '<p class="text-danger fw-bold mb-2">&#9888; This will permanently delete:</p>' +
               '<ul class="mb-3">' +
               '<li>Category thumbnail image</li>' +
-              '<li>All AI Image Filters in this category (<strong>' + count + ' filter' + (count !== 1 ? 's' : '') + '</strong>)</li>' +
+              '<li>All Dynamic Frames in this category (<strong>' + count + ' filter' + (count !== 1 ? 's' : '') + '</strong>)</li>' +
               '<li>All filter images &amp; zip files</li>' +
               '</ul>' +
               '<p class="mb-0 text-muted" style="font-size:.88rem;">This action <strong>cannot be undone</strong>.</p>' +
