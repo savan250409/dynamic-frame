@@ -123,13 +123,12 @@ class AiImageFilterApiController extends Controller
     private function formatFilter(AiImageFilter $filter, AiImageFilterCategory $category): array
     {
         return [
-            'id'       => $filter->id,
-            'name'     => $filter->name,
-            'ai_prompt' => $filter->ai_prompt,
-            'image'    => $filter->image_path
+            'id'          => $filter->id,
+            'input_count' => $filter->input_count ?? 1,
+            'image'       => $filter->image_path
                 ? asset('upload/ai_image_filter/' . rawurlencode($category->category_name) . '/images/' . rawurlencode($filter->image_path))
                 : null,
-            'zip_file' => $filter->zip_file
+            'zip_file'    => $filter->zip_file
                 ? asset('upload/ai_image_filter/' . rawurlencode($category->category_name) . '/zip/' . rawurlencode($filter->zip_file))
                 : null,
         ];
